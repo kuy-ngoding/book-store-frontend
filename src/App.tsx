@@ -47,6 +47,7 @@ import { ToastContainer } from "react-toastify";
 import DashboardLoader from "./pages/utility/DashboardLoader";
 import UserManagementRoutes from "./pages/user-management/UserManagementRoutes";
 import OrderRoutes from "./pages/orders/OrderRoutes";
+import ProductRoutes from "./pages/products/ProductRoutes";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -105,8 +106,18 @@ const App: React.FC = () => {
             </RequireAuth>
           }
         ></Route>
+
+        <Route
+          path="/product/*"
+          element={
+            <RequireAuth>
+              <ProductRoutes />
+            </RequireAuth>
+          }
+        ></Route>
         {/* Components */}
         <Route path="/component/modal" element={<ModalPage />}></Route>
+          <Route path="/product/list" element={<ModalPage />}></Route>
         <Route path="/ecommerce/customers" element={<Customers />}></Route>
         <Route path="/ecommerce/orders" element={<Orders />}></Route>
         <Route path="/ecommerce/invoices" element={<Invoices />}></Route>
