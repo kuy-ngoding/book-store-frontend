@@ -28,6 +28,7 @@ import { sermonParticipantApi } from "../modules/sermons/api/sermon-participant.
 import { companyApi } from "../modules/company/api/company.api";
 import { orderApi } from "../modules/orders/api/order.api";
 import { productApi } from "../modules/company copy/api/product.api";
+import { studentApi } from "../modules/student/api/student.api";
 
 const persistConfig = {
   key: "root",
@@ -65,6 +66,11 @@ const reducers = {
 
   // produtapi
   [productApi.reducerPath]: productApi.reducer,
+
+  //studentApi
+  [studentApi.reducerPath]: studentApi.reducer,
+
+
 };
 
 export const rootReducer: Reducer<RootState> = (state, action) => {

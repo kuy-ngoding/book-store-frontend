@@ -48,6 +48,7 @@ import DashboardLoader from "./pages/utility/DashboardLoader";
 import UserManagementRoutes from "./pages/user-management/UserManagementRoutes";
 import OrderRoutes from "./pages/orders/OrderRoutes";
 import ProductRoutes from "./pages/products/ProductRoutes";
+import StudentRoutes from "./pages/students/StudentRoutes";
 
 const App: React.FC = () => {
   const location = useLocation();
@@ -112,6 +113,14 @@ const App: React.FC = () => {
           element={
             <RequireAuth>
               <ProductRoutes />
+            </RequireAuth>
+          }
+        ></Route>
+        <Route
+          path="/student/*"
+          element={
+            <RequireAuth>
+              <StudentRoutes />
             </RequireAuth>
           }
         ></Route>

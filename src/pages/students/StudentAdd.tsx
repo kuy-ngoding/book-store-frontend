@@ -5,21 +5,17 @@ import { ErrorMessage, Field, Form, Formik } from "formik";
 import * as Yup from "yup";
 import { Link, useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { useCreateUserMutation } from "../../modules/users/api/user.api";
-import { User } from "../../modules/users/dtos/models/user.entity";
-import { RoleEnum } from "../../modules/users/enums/role.enum";
 import Header from "../../partials/Header";
 import Sidebar from "../../partials/Sidebar";
-import { useTypedSelector } from "../../store";
-import { ProductCreateRequest } from "../../modules/company copy/dtos/requests/product-create.request";
-import { useCreateProductMutation } from "../../modules/company copy/api/product.api";
+import { StudentCreateRequest } from "../../modules/student/dtos/student-create.request";
+import { useCreateStudentMutation } from "../../modules/student/api/student.api";
 
-function ProductAdd() {
-  /* SideBar State */
+function StudentAdd() {
+  /* SideBar State */ 
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   /* Create feature mutation for creating new feature */
-  const [createProduct, createProductProcess] = useCreateProductMutation();
+  const [createStudent, createStudentProcess] = useCreateStudentMutation();
 
   const [showPassword, setShowPassword] = useState(false);
 
@@ -31,44 +27,48 @@ function ProductAdd() {
   const navigate = useNavigate();
 
   /* Initial State for Formik form */
-  const initialState: ProductCreateRequest = {
-    productName: "",
-    productPrice: null,
-    productDecsription: "",  
+  const initialState: StudentCreateRequest = {
+    studentName: "",
+    address: "",
+    phoneNumber:  null,
+    email: "",
   };
 
   /* Validation Schema for Formik */
   const validationSchema = Yup.object().shape({
-    productName: Yup.string().required("Field is required!"),
-    // productPrice: Yup.string().required("Field is required!"),
-    productPrice: Yup.number()
+    studentName: Yup.string().required("Field is required!"),
+    address: Yup.string().required("Field is required!"),
+    phoneNumber: Yup.number()
     .typeError('you must specify a number')
     .min(1, 'Min value 1.'),
-    productDecsription: Yup.string().required("Field is required!"),
+    email: Yup.string().required("Field is required!"),
   });
 
   /* Handle Create New Feature */
-  const handleSubmit = async (formValue: ProductCreateRequest) => {
+  const handleSubmit = async (formValue: StudentCreateRequest) => {
     // console.log(formValue);
     try {
-      await createProduct({
-        ...formValue,
+      await createStudent({
+        studentName: formValue.studentName,
+        address: formValue.address,
+        phoneNumber: formValue.phoneNumber,
+        email: formValue.email,
       });
-      // const response = await createProduct({
+      // const response = await createStudent({
       //   ...formValue,
       // }).unwrap();
       // console.log(response);
-      // await createProduct({
-      //   productName: formValue.productName,
-      //   productPrice: formValue.productPrice,
-      //   productDecsription: formValue.productDecsription
+      // await createStudent({
+      //   studentName: formValue.studentName,
+      //   address: formValue.address,
+      //   phoneNumber: formValue.phoneNumber
       // }).unwrap();
       setTimeout(() => {
-        toast.success(`${formValue.productName} Created!`, {
+        toast.success(`${formValue.studentName} Created!`, {
           theme: "dark",
         });
       }, 0.1);
-      navigate("/product/list");
+      navigate("/student/list");
     } catch (error: any) {
       if(error.data.statusCode < 500) {
         setTimeout(() => {
@@ -117,7 +117,7 @@ function ProductAdd() {
               {/* navigation */}
               <header className="px-5 pt-4 pb-1 flex flex-row">
                 <Link
-                  to="/product/list"
+                  to="/student/list"
                   className="btn btn-sm bg-white border-gray-200 hover:bg-white hover:border-slate-400 text-indigo-500"
                 >
                   <FaArrowLeft />
@@ -138,21 +138,21 @@ function ProductAdd() {
                     <div>
                       <label
                         className="block text-sm font-medium mb-1"
-                        htmlFor="productName"
+                        htmlFor="studentName"
                       >
-                        Product Name
+                        Student Name
                         <span className="text-red-500"> *</span>
                       </label>
                       <Field
-                        id="productName"
-                        name="productName"
+                        id="studentName"
+                        name="studentName"
                         placeholder="ex: Baju"
                         className="form-input w-full"
                         type="text"
                       />
                       <div className="h-2">
                         <ErrorMessage
-                          name="productName"
+                          name="studentName"
                           component="span"
                           className="text-red-500 text-sm"
                         />
@@ -161,20 +161,20 @@ function ProductAdd() {
                     <div>
                       <label
                         className="block text-sm font-medium mb-1"
-                        htmlFor="productPrice"
+                        htmlFor="address"
                       >
-                        Product Price
+                        Address
                       </label>
                       <Field
-                        id="productPrice"
-                        name="productPrice"
-                        placeholder="ex: 5000"
+                        id="address"
+                        name="address"
+                        placeholder="Pondok Pinang"
                         className="form-input w-full"
                         type="text"
                       />
                       <div className="h-2">
                         <ErrorMessage
-                          name="productPrice"
+                          name="address"
                           component="span"
                           className="text-red-500 text-sm"
                         />
@@ -183,13 +183,13 @@ function ProductAdd() {
                     <div>
                       <label
                         className="block text-sm font-medium mb-1"
-                        htmlFor="productDecsription"
+                        htmlFor="phoneNumber"
                       >
-                        Product Description
+                        Phone Number
                       </label>
                       <Field
-                        id="productDecsription"
-                        name="productDecsription"
+                        id="phoneNumber"
+                        name="phoneNumber"
                         placeholder="ex: Put your description here."
                         className="form-input w-full"
                         as="textarea"
@@ -197,7 +197,30 @@ function ProductAdd() {
                       />
                       <div className="h-2">
                         <ErrorMessage
-                          name="productDecsription"
+                          name="phoneNumber"
+                          component="span"
+                          className="text-red-500 text-sm"
+                        />
+                      </div>
+                    </div>                   
+                    <div>
+                      <label
+                        className="block text-sm font-medium mb-1"
+                        htmlFor="email"
+                      >
+                        Email
+                      </label>
+                      <Field
+                        id="email"
+                        name="email"
+                        placeholder="ex: Put your description here."
+                        className="form-input w-full"
+                        as="textarea"
+                        rows="5"
+                      />
+                      <div className="h-2">
+                        <ErrorMessage
+                          name="email"
                           component="span"
                           className="text-red-500 text-sm"
                         />
@@ -207,7 +230,7 @@ function ProductAdd() {
 
                   </div>
                   <div className="flex items-center justify-end mt-6">
-                    {createProductProcess.isLoading ? (
+                    {createStudentProcess.isLoading ? (
                       <button
                         className="btn loading hover:bg-indigo-600  disabled:bg-indigo-600 disabled:text-white"
                         disabled={true}
@@ -235,4 +258,4 @@ function ProductAdd() {
   );
 }
 
-export default ProductAdd;
+export default StudentAdd;
