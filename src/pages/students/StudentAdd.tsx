@@ -108,7 +108,7 @@ function StudentAdd() {
               {/* Left: Title */}
               <div className="mb-4 sm:mb-0">
                 <h1 className="text-2xl md:text-3xl text-gray-800 font-bold">
-                  Product Add
+                  Student Add
                 </h1>
               </div>
             </div>
@@ -123,7 +123,7 @@ function StudentAdd() {
                   <FaArrowLeft />
                 </Link>
                 <h2 className="font-semibold text-gray-800 ml-3 mt-1">
-                  New Users
+                  New Student
                 </h2>
               </header>
 
@@ -192,8 +192,7 @@ function StudentAdd() {
                         name="phoneNumber"
                         placeholder="ex: Put your description here."
                         className="form-input w-full"
-                        as="textarea"
-                        rows="5"
+                        type="text"
                       />
                       <div className="h-2">
                         <ErrorMessage
@@ -215,8 +214,7 @@ function StudentAdd() {
                         name="email"
                         placeholder="ex: Put your description here."
                         className="form-input w-full"
-                        as="textarea"
-                        rows="5"
+                        type="text"
                       />
                       <div className="h-2">
                         <ErrorMessage

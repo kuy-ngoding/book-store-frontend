@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import ModalBase, { ModalType } from "../../components/modal/ModalBase";
 import ModalBlank from "../../components/modal/ModalBlank";
 import ReactTable from "../../components/react-table/ReactTable";
-import { useGetAllStudentQuery } from "../../modules/student/api/student.api";
+import { useDeleteStudentMutation, useGetAllStudentPaginatedQuery, useGetAllStudentQuery } from "../../modules/student/api/student.api";
 import { Student } from "../../modules/student/entities/student.entity";
 import {
   useDeleteUserMutation,
@@ -26,24 +26,25 @@ function StudentList() {
   const [confirmModalOpen, setConfirmModalOpen] = useState(false);
 
   /* Feature Details */
-  const [userDetails, setUserDetails] = useState<User>();
+  const [studentDetails, setStudentDetails] = useState<Student>();
 
-  const [deleteUser] = useDeleteUserMutation();
+  const [deleteStudent] = useDeleteStudentMutation();
+  // const [deleteUser] = useDeleteUserMutation();
 
   // const [userList, setUserList] = useState([]);
   const [studentList, setStudentList] = useState([]); 
   const [totalData, setTotalData] = useState(0);
-  const { data, refetch } = useGetAllStudentQuery(
+  const { data, refetch } = useGetAllStudentPaginatedQuery(
     {},
     { skip: false, refetchOnMountOrArgChange: true }
   );
 
-  const handleDelete = async (user: User) => {
+  const handleDelete = async (student: Student) => {
     try {
-      await deleteUser({
-        id: user._id,
+      await deleteStudent({
+        id: student._id,
       }).unwrap();
-      toast.success(`${user.username} Deleted Successfully!`, {
+      toast.success(`${student.studentName} Deleted Successfully!`, {
         theme: "dark",
       });
       refetch();
@@ -62,7 +63,7 @@ function StudentList() {
       console.log(data.data);
     } catch (error) {
       console.log(error);
-    }
+    }``
   }, [data?.data, data?.total]);
 
   useEffect(() => {
@@ -119,7 +120,7 @@ function StudentList() {
               onClick={(event) => {
                 event.stopPropagation();
                 setConfirmModalOpen(true);
-                setUserDetails(row.original);
+                setStudentDetails(row.original);
               }}
             >
               <FaTrash />
@@ -160,7 +161,7 @@ function StudentList() {
             <div className="bg-white shadow-lg rounded-sm border border-gray-200 relative">
               <header className="px-5 py-4 flex justify-between">
                 <h2 className="font-semibold text-gray-800 mt-1">
-                  Users
+                  Student
                   <span className="text-gray-400 font-medium text-sm ml-1 pt-1">
                     ({totalData})
                   </span>
@@ -195,7 +196,7 @@ function StudentList() {
               <p className="text-gray-600">
                 Are you sure you want to delete{" "}
                 <span className="text-gray-800 font-bold">
-                  {userDetails?.username}
+                  {studentDetails?.studentName}
                 </span>
                 ?
               </p>
@@ -207,7 +208,7 @@ function StudentList() {
                     className="w-full m-4 inline-flex justify-center rounded-md border border-transparent shadow-sm px-4 py-2 bg-red-600 text-base font-medium text-white hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500 sm:ml-3 sm:w-auto sm:text-sm"
                     onClick={() => {
                       setConfirmModalOpen(false);
-                      handleDelete(userDetails);
+                      handleDelete(studentDetails);
                     }}
                   >
                     Delete

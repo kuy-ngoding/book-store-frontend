@@ -28,6 +28,18 @@ export const studentApi = createApi({
         };
       },
     }),
+    getAllStudentPaginated: builder.query<
+      PaginationResponse<Student[]>,
+      StudentFilterRequest
+    >({
+      query: (data) => {
+        return {
+          method: "GET",
+          url: "/api/students/students",
+          params: data,
+        };
+      },
+    }),
     getStudentDetail: builder.query<BaseResponse<Student>, { id: string }>({
       query: (data) => {
         return {
@@ -45,11 +57,11 @@ export const studentApi = createApi({
         };
       },
     }),
-    deleteCompany: builder.mutation<BaseResponse<Student>, { id: string }>({
+    deleteStudent: builder.mutation<BaseResponse<Student>, { id: string }>({
       query: (data) => {
         return {
           method: "DELETE",
-          url: `/api/company/${data.id}`,
+          url: `/api/students/${data.id}`,
         };
       },
     }),
@@ -59,7 +71,8 @@ export const studentApi = createApi({
 export const {
   useCreateStudentMutation,
   useGetAllStudentQuery,
+  useGetAllStudentPaginatedQuery,
   useGetStudentDetailQuery,
   useUpdateStudentMutation,
-  useDeleteCompanyMutation,
+  useDeleteStudentMutation,
 } = studentApi;
